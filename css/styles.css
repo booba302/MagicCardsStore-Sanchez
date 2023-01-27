@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+h1 {
+    letter-spacing: 2px;
+    font-size: 64px;
+    position: relative;
+    top: 75px
+}
+
+body {
+    position: relative;
+    top: -200px;
+}
+
+.sub {
+    position: relative;
+    top: -175px;
+    font-size: 28px;
+}
+
+.header {
+    text-align: center;
+    background: linear-gradient(60deg, rgba(57, 81, 68, 1) 0%, rgba(78, 108, 80, 1) 100%);
+    color: white;
+}
+
+.logo {
+    width: 64px;
+    padding-right: 15px;
+    position: relative;
+    top: 75px
+}
+
+.inner-header {
+    height: 65vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.waves {
+    position: relative;
+    width: 100%;
+    height: 15vh;
+    margin-bottom: -7px;
+    min-height: 100px;
+    max-height: 150px;
+}
+
+.content {
+    position: relative;
+    height: 20vh;
+    text-align: center;
+    background-color: white;
+}
+
+hr {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.filters,
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.cards {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 50px 0;
+}
+
+.single_card {
+    display: grid;
+    grid-template-columns: 1;
+    width: 250px;
+    grid-template-areas:
+        "img img"
+        "name button"
+        "price button";
+}
+
+.card_img {
+    width: 250px;
+    grid-area: img;
+}
+
+.card_name {
+    grid-area: name;
+    font-size: 16px;
+}
+
+.card_price {
+    grid-area: price;
+    font-size: 12px;
+    align-self: end;
+}
+
+.card_button {
+    grid-area: button;
+    margin: 5px;
+    border-radius: 5px;
+    justify-self: end;
+    align-self: end;
+}
+
+.parallax>use {
+    animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+}
+
+.parallax>use:nth-child(1) {
+    animation-delay: -2s;
+    animation-duration: 7s;
+}
+
+.parallax>use:nth-child(2) {
+    animation-delay: -3s;
+    animation-duration: 10s;
+}
+
+.parallax>use:nth-child(3) {
+    animation-delay: -4s;
+    animation-duration: 13s;
+}
+
+.parallax>use:nth-child(4) {
+    animation-delay: -5s;
+    animation-duration: 20s;
+}
+
+@keyframes move-forever {
+    0% {
+        transform: translate3d(-90px, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(85px, 0, 0);
+    }
+}
+
+/*Shrinking for mobile*/
+@media (max-width: 768px) {
+    .waves {
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .content {
+        height: 30vh;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .logo {
+        width: 32px;
+    }
+}
+
+.foot {
+    display: flex;
+    justify-content: end;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    background-color: green;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    margin-top: 22px;
+    border: none;
+    box-shadow: 0 0 8px black;
+}
+
+.cart p {
+    width: 14px;
+    height: 14px;
+    background-color: red;
+    font-size: 10px;
+    font-weight: 500px;
+    border-radius: 7px;
+}
