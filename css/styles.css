@@ -205,3 +205,31 @@ form {
     font-weight: 500px;
     border-radius: 7px;
 }
+
+.w:hover {
+    box-shadow: 0 0 8px yellow;
+}
+
+.g:hover {
+    box-shadow: 0 0 8px green;
+}
+
+.u:hover {
+    box-shadow: 0 0 8px blue;
+}
+
+.b:hover {
+    box-shadow: 0 0 8px black;
+}
+
+.r:hover {
+    box-shadow: 0 0 8px red;
+}
+
+.c:hover {
+    box-shadow: 0 0 8px gray;
+}
+
+.m:hover {
+    box-shadow: 0 0 8px goldenrod;
+}

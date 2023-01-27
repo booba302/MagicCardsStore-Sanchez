@@ -45,7 +45,7 @@ function loadCards(cardList) {
         divCard.className = 'single_card'
 
         const img = document.createElement('img')
-        img.className = 'card_img'
+        img.className = 'card_img '+card.color
         img.src = card.img
 
         const h2 = document.createElement('h2')
