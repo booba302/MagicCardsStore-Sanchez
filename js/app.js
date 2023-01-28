@@ -6,7 +6,6 @@ const divCards = document.getElementById('cards')
 const colorSelect = document.getElementById('colors')
 const nameFilter = document.getElementById('nameFilter')
 const colorFilter = document.getElementById('colors')
-const search = document.getElementById('search')
 const qty = document.getElementById('qty')
 
 qty.hidden = true
@@ -29,6 +28,7 @@ cards.push(new Cards('13', "Child of Alara", "https://cards.scryfall.io/normal/f
 cards.push(new Cards('14', "Garth One-Eye", "https://cards.scryfall.io/normal/front/2/3/23774462-9f17-4b50-a2ac-b2edd706bbfe.jpg?1626098353", "{T}: Choose a card name that hasn't been chosen from among Disenchant, Braingeyser, Terror, Shivan Dragon, Regrowth, and Black Lotus. Create a copy of the card with the chosen name. You may cast the copy. (You still pay its costs.)", "m", 0.52))
 
 localStorage.setItem('cards', JSON.stringify(cards))
+localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
 
 const cardList = JSON.parse(localStorage.getItem('cards'))
 
@@ -45,7 +45,7 @@ function loadCards(cardList) {
         divCard.className = 'single_card'
 
         const img = document.createElement('img')
-        img.className = 'card_img '+card.color
+        img.className = 'card_img ' + card.color
         img.src = card.img
 
         const h2 = document.createElement('h2')
@@ -59,6 +59,7 @@ function loadCards(cardList) {
         const button = document.createElement('button')
         button.className = 'btn btn-success card_button'
         button.id = card.id
+
         const i = document.createElement('i')
         i.className = iconClass
         button.appendChild(i)
@@ -93,20 +94,21 @@ function loadColors() {
 
 nameFilter.addEventListener('input', cardFilterName)
 
+let color = colorSelect.value
+
 function cardFilterName(e) {
+
+    let color = colorSelect.value
+    color === 'Seleccione un color' ? color = '' : color
 
     const cards = JSON.parse(localStorage.getItem('cards'))
 
-    let cardList = cards.filter(card => card.name.toLowerCase().includes(e.target.value.toLowerCase()))
+    let cardList = cards.filter(card => card.name.toLowerCase().includes(e.target.value.toLowerCase()) && card.color.includes(color))
 
     loadCards(cardList)
 }
 
-search.addEventListener('click', cardFilterColor)
-
-function cardFilterColor(e) {
-
-    e.preventDefault()
+colorSelect.onchange = () => {
 
     const selectedColor = colorFilter.value
     let cardList
@@ -114,13 +116,21 @@ function cardFilterColor(e) {
     if (selectedColor === 'Seleccione un color') {
 
         cardList = JSON.parse(localStorage.getItem('cards'))
-        nameFilter.disabled = false 
 
-    } else {        
+    } else {
 
-        cardList = cards.filter(card => card.color.includes(selectedColor)) 
-        nameFilter.disabled = true       
+        cardList = cards.filter(card => card.color.includes(selectedColor))
     }
 
     loadCards(cardList)
+}
+
+let btnAdd = document.querySelectorAll('.card_button')
+
+for (i of btnAdd) {
+
+    i.addEventListener('click', function () {
+        shoppingCart.push(cardList[this.id - 1])
+        localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
+    });
 }

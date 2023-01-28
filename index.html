@@ -55,19 +55,29 @@
     <div class="filters">
         <input type="text" class="form-control" id="nameFilter" style="width:auto" placeholder="Búsqueda por nombre">
 
-        <form id="colorSearch">
-            <div class="form-group">
-                <select class="form-select form-select-md" style="width:auto" name="colors" id="colors">
-                    <option selected="selected">Seleccione un color</option>
-                </select>
-            </div>
-            <button class="btn btn-success" id='search'><i class="fa-solid fa-magnifying-glass"></i></button>
-        </form>
+        <select class="form-select form-select-md" style="width:auto" name="colors" id="colors">
+            <option selected="selected">Seleccione un color</option>
+        </select>
+
     </div>
 
     <hr>
 
     <div id="cards" class="cards">
+    </div>
+
+    <div class="cartTable table" id="cartTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
     </div>
 
     <div class="foot">
