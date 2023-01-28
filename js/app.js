@@ -143,8 +143,6 @@ for (i of btnAdd) {
             selectedCard.qty = 1
             shoppingCart.push(selectedCard)
         }
-                
-        console.log(shoppingCart)
 
         localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
     });
