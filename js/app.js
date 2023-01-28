@@ -130,7 +130,22 @@ let btnAdd = document.querySelectorAll('.card_button')
 for (i of btnAdd) {
 
     i.addEventListener('click', function () {
-        shoppingCart.push(cardList[this.id - 1])
+
+        let selectedCard = cardList[this.id - 1]
+
+        if(shoppingCart.includes(selectedCard)) {
+
+            let index = shoppingCart.indexOf(selectedCard)
+            shoppingCart[index].qty++
+
+        } else {
+
+            selectedCard.qty = 1
+            shoppingCart.push(selectedCard)
+        }
+                
+        console.log(shoppingCart)
+
         localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
     });
 }
