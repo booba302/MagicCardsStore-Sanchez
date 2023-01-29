@@ -7,6 +7,7 @@ const colorSelect = document.getElementById('colors')
 const nameFilter = document.getElementById('nameFilter')
 const colorFilter = document.getElementById('colors')
 const qty = document.getElementById('qty')
+const modalBody = document.getElementById('modal-body')
 
 qty.hidden = true
 
@@ -133,7 +134,7 @@ for (i of btnAdd) {
 
         let selectedCard = cardList[this.id - 1]
 
-        if(shoppingCart.includes(selectedCard)) {
+        if (shoppingCart.includes(selectedCard)) {
 
             let index = shoppingCart.indexOf(selectedCard)
             shoppingCart[index].qty++
@@ -145,5 +146,78 @@ for (i of btnAdd) {
         }
 
         localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
+        addToCart()
     });
+}
+
+function addToCart() {    
+
+    const cardsCar = JSON.parse(localStorage.getItem('shoppingCart'))
+    modalBody.innerHTML = ''
+    let subTotal = 0
+    let totalPrice = 0
+    let qtyTotal = 0
+
+    cardsCar.forEach(card => {
+
+        const modalCart = document.createElement('div')
+        modalCart.className = 'modal-cart'
+
+        const img = document.createElement('img')
+        img.src = card.img
+
+        const divInfo = document.createElement('div')
+        divInfo.className = 'info'
+        const name = document.createElement('h5')
+        name.innerText = card.name
+        divInfo.appendChild(name)
+
+        const divQty = document.createElement('div')
+        divQty.className = 'qty'
+        const qtyMinus = document.createElement('a')
+        qtyMinus.href = '#'
+        const iconMinus = document.createElement('i')
+        iconMinus.className = 'fa-solid fa-circle-minus'
+        qtyMinus.appendChild(iconMinus)
+        divQty.appendChild(qtyMinus)
+
+        const qty = document.createElement('h5')
+        qty.innerText = card.qty
+        divQty.appendChild(qty)
+        
+        const qtyPlus = document.createElement('a')
+        qtyPlus.href = '#'
+        const iconPlus = document.createElement('i')
+        iconPlus.className = 'fa-solid fa-circle-plus'
+        qtyPlus.appendChild(iconPlus)
+        divQty.appendChild(qtyPlus)
+
+        const divPrice = document.createElement('div')
+        divPrice.className = 'price'
+        const total = document.createElement('h5')
+        subTotal = card.price * card.qty
+        total.innerText = subTotal.toFixed(2)+'$'
+        divPrice.appendChild(total)
+
+        modalCart.appendChild(img)
+        modalCart.appendChild(divInfo)
+        modalCart.appendChild(divQty)
+        modalCart.appendChild(divPrice)
+
+        const hr = document.createElement('hr')
+
+        modalBody.appendChild(modalCart)
+        modalBody.appendChild(hr)
+
+        totalPrice = totalPrice + subTotal
+        qtyTotal = qtyTotal + card.qty
+    })
+
+    const totalAmount = document.createElement('p')
+    totalAmount.innerText = 'El total a pagar es de ' + totalPrice.toFixed(2) + '$'
+    totalAmount.className = 'text-end total'
+    modalBody.appendChild(totalAmount)
+
+    qty.innerText = qtyTotal
+    qty.hidden = false
 }

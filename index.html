@@ -66,23 +66,43 @@
     <div id="cards" class="cards">
     </div>
 
-    <div class="cartTable table" id="cartTable">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        </tbody>
+    <!-- Modal -->
+    <div class="modal fade modal-md" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Productos agregados al carrito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">    
+                    <div class="modal-cart">                        
+                        <img src="https://cards.scryfall.io/normal/front/e/6/e632ed57-bb00-4493-adef-7b4805edd7ea.jpg?1674420256" alt="">
+                        <div class="info">
+                            <h5>Myrel, Shield of Argive</h5>                            
+                        </div>
+                        <div class="qty">
+                            <a href="#"><i class="fa-solid fa-circle-plus"></i></a>
+                            <h5>2</h5>
+                            <a href="#"><i class="fa-solid fa-circle-minus"></i></a>
+                        </div>
+                        <div class="price">
+                            <h5>16.98$</h5>
+                        </div>                      
+                    </div>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="foot">
-        <button class="cart">
-            <p class="qty" id="qty"></p>
+        <button class="cart" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <p class="qty text-center" id="qty"></p>
             <i class="fa-solid fa-cart-shopping"></i>
         </button>
     </div>
