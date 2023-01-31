@@ -119,7 +119,7 @@ let color = colorSelect.value
 function cardFilterName(e) {
 
     let color = colorSelect.value
-    color === 'Seleccione un color' ? color = '' : color
+    color === 'Búsqueda por color' ? color = '' : color
 
     const cards = JSON.parse(localStorage.getItem('cards'))
 
@@ -137,7 +137,7 @@ colorSelect.onchange = () => {
 
     const selectedColor = colorFilter.value
 
-    if (selectedColor === 'Seleccione un color') {
+    if (selectedColor === 'Búsqueda por color') {
 
         cardList = JSON.parse(localStorage.getItem('cards'))
         nameFilter.value = ''
