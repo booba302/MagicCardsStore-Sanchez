@@ -1,6 +1,5 @@
 let shoppingCart = []
 let cardList = []
-let cart = []
 const cards = []
 const colors = []
 
@@ -176,7 +175,7 @@ for (i of btnAdd) {
             shoppingCart[index].qty++
             Swal.fire(
                 '¡Se ha agregado al carrito!',
-                shoppingCart[index].name,
+                selectedCard.name,
                 'success'
             )
         }
@@ -265,7 +264,6 @@ btnEmpty.addEventListener('click', () => {
 
     localStorage.removeItem('shoppingCart')
     shoppingCart = []
-    cart = []
 
     addToCart(shoppingCart)
 
