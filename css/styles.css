@@ -209,31 +209,31 @@ hr {
     border-radius: 7px;
 }
 
-.w:hover {
+.W:hover {
     box-shadow: 0 0 8px yellow;
 }
 
-.g:hover {
+.G:hover {
     box-shadow: 0 0 8px green;
 }
 
-.u:hover {
+.U:hover {
     box-shadow: 0 0 8px blue;
 }
 
-.b:hover {
+.B:hover {
     box-shadow: 0 0 8px black;
 }
 
-.r:hover {
+.R:hover {
     box-shadow: 0 0 8px red;
 }
 
-.c:hover {
+.C:hover {
     box-shadow: 0 0 8px gray;
 }
 
-.m:hover {
+.M:hover {
     box-shadow: 0 0 8px goldenrod;
 }
 
