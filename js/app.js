@@ -10,6 +10,7 @@ const colorFilter = document.getElementById('colors')
 const qty = document.getElementById('qty')
 const modalBody = document.getElementById('modal-body')
 const btnEmpty = document.getElementById('btn-empty')
+const btnCart = document.getElementById('cart')
 const iconClass = 'fa-solid fa-cart-plus'
 qty.hidden = true
 
@@ -18,11 +19,11 @@ if ('cards' in localStorage) {
     cardList = JSON.parse(localStorage.getItem('cards'))
 
     window.addEventListener('load', loadCards(cardList))
-    window.addEventListener('load', loadColors)
 
 } else {
 
     let nextPage
+    let filteredCards
 
     fetch('https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Aone')
         .then((response) => response.json())
@@ -30,8 +31,10 @@ if ('cards' in localStorage) {
 
             nextPage = json.next_page
 
-            json.data.forEach(e => {
-                cards.push(new Cards(e.id, e.name, e.image_uris.png, e.printed_text, e.color_identity[0], e.prices.usd))
+            filteredCards = json.data.filter(card => card.type_line.includes('Legendary'))
+            filteredCards.forEach(e => {
+
+                cards.push(new Cards(e.id, e.name, e.image_uris.png, e.printed_text, e.colors[0], e.prices.usd))
             })
 
             return fetch(nextPage)
@@ -39,17 +42,23 @@ if ('cards' in localStorage) {
         .then((response) => response.json())
         .then((json) => {
 
-            json.data.forEach(e => {
-                cards.push(new Cards(e.id, e.name, e.image_uris.png, e.printed_text, e.color_identity[0], e.prices.usd))
+            filteredCards = json.data.filter(card => card.type_line.includes('Legendary'))
+            filteredCards.forEach(e => {
+
+                (e.colors.length === 0) ? e.colors.push('C') : e.colors;
+                (e.colors.length > 1) ? e.colors = ['M'] : e.colors;
+
+                cards.push(new Cards(e.id, e.name, e.image_uris.png, e.printed_text, e.colors[0], e.prices.usd))
             })
 
             localStorage.setItem('cards', JSON.stringify(cards))
             cardList = JSON.parse(localStorage.getItem('cards'))
 
             window.addEventListener('load', loadCards(cardList))
-            window.addEventListener('load', loadColors)
         })
 }
+
+window.addEventListener('load', loadColors)
 
 if ('shoppingCart' in localStorage) {
 
@@ -89,6 +98,7 @@ function loadCards(cardList) {
         const button = document.createElement('button')
         button.className = 'btn btn-success card_button'
         button.id = card.id
+        button.addEventListener('click', cardAdded)
 
         const i = document.createElement('i')
         i.className = iconClass
@@ -124,8 +134,6 @@ function loadColors() {
 
 nameFilter.addEventListener('input', cardFilterName)
 
-let color = colorSelect.value
-
 function cardFilterName(e) {
 
     let color = colorSelect.value
@@ -133,7 +141,7 @@ function cardFilterName(e) {
 
     const cards = JSON.parse(localStorage.getItem('cards'))
 
-    let cardFiltered = cards.filter(card => card.name.toLowerCase().includes(e.target.value.toLowerCase()) && card.color.includes(color))
+    let cardFiltered = cards.filter(card => card.name.toLowerCase().includes(e.target.value.toLowerCase()) && card.color.toLowerCase().includes(color))
 
     loadCards(cardFiltered)
 
@@ -154,50 +162,78 @@ colorSelect.onchange = () => {
         loadCards(cardList)
 
     } else {
-
-        cardFiltered = cardList.filter(card => card.color.includes(selectedColor))
+        cardFiltered = cardList.filter(card => card.color.toLowerCase().includes(selectedColor))
         nameFilter.value = ''
         loadCards(cardFiltered)
     }
 }
 
-let btnAdd = document.querySelectorAll('.card_button')
+function cardAdded() {
 
-for (i of btnAdd) {
+    let selectedCard = cardList.filter(card => card.id.includes(this.id))
+    let index = shoppingCart.map(cart => cart.name).indexOf(selectedCard[0].name)
 
-    i.addEventListener('click', function () {
+    if (index < 0) {
 
-        let selectedCard = cardList[this.id]
-        let index = shoppingCart.map(cart => cart.name).indexOf(selectedCard.name)
+        selectedCard[0].qty = 1
+        shoppingCart.push(selectedCard[0])
+        Swal.fire(
+            '¡Se ha agregado al carrito!',
+            selectedCard[0].name,
+            'success'
+        )
 
-        if (index < 0) {
+    } else {
 
-            selectedCard.qty = 1
-            shoppingCart.push(selectedCard)
-            Swal.fire(
-                '¡Se ha agregado al carrito!',
-                selectedCard.name,
-                'success'
-            )
+        shoppingCart[index].qty++
+        Swal.fire(
+            '¡Se ha agregado al carrito!',
+            selectedCard[0].name,
+            'success'
+        )
+    }
 
-        } else {
-
-            shoppingCart[index].qty++
-            Swal.fire(
-                '¡Se ha agregado al carrito!',
-                selectedCard.name,
-                'success'
-            )
-        }
-
-        shoppingCart.map(cart => cart.name).indexOf(selectedCard.name)
-
-        localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
-        shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
-        addToCart(shoppingCart)
-
-    });
+    localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
+    shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
+    addToCart(shoppingCart)
 }
+
+// let btnAdd = document.querySelectorAll('.card_button')
+
+// for (i of btnAdd) {
+
+//     i.addEventListener('click', function () {
+
+//         let selectedCard = cardList.filter(card => card.id.includes(this.id))
+//         console.log(selectedCard[0].name);
+//         let index = shoppingCart.map(cart => cart.name).indexOf(selectedCard[0].name)
+
+//         if (index < 0) {
+
+//             selectedCard[0].qty = 1
+//             shoppingCart.push(selectedCard[0])
+//             Swal.fire(
+//                 '¡Se ha agregado al carrito!',
+//                 selectedCard[0].name,
+//                 'success'
+//             )
+
+//         } else {
+
+//             shoppingCart[index].qty++
+//             Swal.fire(
+//                 '¡Se ha agregado al carrito!',
+//                 selectedCard[0].name,
+//                 'success'
+//             )
+//         }
+
+//         localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
+//         shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
+//         addToCart(shoppingCart)
+
+//     });
+// }
 
 function addToCart(shoppingCart) {
 
@@ -222,10 +258,13 @@ function addToCart(shoppingCart) {
 
         const divQty = document.createElement('div')
         divQty.className = 'qty'
+
         const qtyMinus = document.createElement('a')
-        qtyMinus.href = '#'
         const iconMinus = document.createElement('i')
         iconMinus.className = 'fa-solid fa-circle-minus'
+        iconMinus.id = 'minus-' + card.id
+        qtyMinus.href = '#' + iconMinus.id
+        iconMinus.addEventListener('click', minusCard)
         qtyMinus.appendChild(iconMinus)
         divQty.appendChild(qtyMinus)
 
@@ -234,9 +273,11 @@ function addToCart(shoppingCart) {
         divQty.appendChild(qty)
 
         const qtyPlus = document.createElement('a')
-        qtyPlus.href = '#'
         const iconPlus = document.createElement('i')
         iconPlus.className = 'fa-solid fa-circle-plus'
+        iconPlus.id = 'plus-' + card.id
+        qtyPlus.href = '#' + iconPlus.id
+        iconPlus.addEventListener('click', plusCard)
         qtyPlus.appendChild(iconPlus)
         divQty.appendChild(qtyPlus)
 
@@ -283,3 +324,37 @@ btnEmpty.addEventListener('click', () => {
         'success'
     )
 })
+
+function plusCard() {
+
+    let id = this.id.replace('plus-', '')
+    shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
+
+    shoppingCart.forEach(card => {
+
+        (card.id === id) ? card.qty++ : card.qty
+
+        localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
+        addToCart(shoppingCart)
+    })
+
+}
+
+function minusCard() {
+
+    let id = this.id.replace('minus-', '')
+    shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
+
+    let index = shoppingCart.map(cart => cart.id).indexOf(id)
+
+    shoppingCart.forEach(card => {
+
+        (card.id === id) ? card.qty-- : card.qty;
+        (card.qty === 0) ? shoppingCart.splice(index, 1) : card.qty;
+
+        localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
+        addToCart(shoppingCart)
+    })
+
+}
+
