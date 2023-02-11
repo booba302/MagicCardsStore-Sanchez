@@ -13,6 +13,7 @@ const btnEmpty = document.getElementById('btn-empty')
 const btnCart = document.getElementById('cart')
 const iconClass = 'fa-solid fa-cart-plus'
 qty.hidden = true
+btnEmpty.disabled = true
 
 if ('cards' in localStorage) {
 
@@ -198,43 +199,6 @@ function cardAdded() {
     addToCart(shoppingCart)
 }
 
-// let btnAdd = document.querySelectorAll('.card_button')
-
-// for (i of btnAdd) {
-
-//     i.addEventListener('click', function () {
-
-//         let selectedCard = cardList.filter(card => card.id.includes(this.id))
-//         console.log(selectedCard[0].name);
-//         let index = shoppingCart.map(cart => cart.name).indexOf(selectedCard[0].name)
-
-//         if (index < 0) {
-
-//             selectedCard[0].qty = 1
-//             shoppingCart.push(selectedCard[0])
-//             Swal.fire(
-//                 '¡Se ha agregado al carrito!',
-//                 selectedCard[0].name,
-//                 'success'
-//             )
-
-//         } else {
-
-//             shoppingCart[index].qty++
-//             Swal.fire(
-//                 '¡Se ha agregado al carrito!',
-//                 selectedCard[0].name,
-//                 'success'
-//             )
-//         }
-
-//         localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
-//         shoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
-//         addToCart(shoppingCart)
-
-//     });
-// }
-
 function addToCart(shoppingCart) {
 
     modalBody.innerHTML = ''
@@ -309,20 +273,33 @@ function addToCart(shoppingCart) {
     qty.innerText = qtyTotal
 
     qtyTotal > 0 ? qty.hidden = false : qty.hidden = true
+    qtyTotal <= 0 ? btnEmpty.disabled = true : btnEmpty.disabled = false
 }
 
-btnEmpty.addEventListener('click', () => {
+btnEmpty.addEventListener('click', () => {     
 
-    localStorage.removeItem('shoppingCart')
-    shoppingCart = []
+    Swal.fire({
+        title: '¿Estás seguro de vaciar el carrito?',
+        text: 'Esta acción no se podrá deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vaciar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                '¡Se vació el carrito!',
+                '',
+                'success'
+            )
+            localStorage.removeItem('shoppingCart')
+            shoppingCart = []
 
-    addToCart(shoppingCart)
-
-    Swal.fire(
-        '¡Se vació el carrito!',
-        '',
-        'success'
-    )
+            addToCart(shoppingCart) 
+        }
+    })
 })
 
 function plusCard() {
