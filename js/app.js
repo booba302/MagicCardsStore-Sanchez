@@ -2,6 +2,7 @@ let shoppingCart = []
 let cardList = []
 const cards = []
 const colors = []
+let totalCompra = 0
 
 const divCards = document.getElementById('cards')
 const colorSelect = document.getElementById('colors')
@@ -10,10 +11,12 @@ const colorFilter = document.getElementById('colors')
 const qty = document.getElementById('qty')
 const modalBody = document.getElementById('modal-body')
 const btnEmpty = document.getElementById('btn-empty')
+const btnPay = document.getElementById('btn-pay')
 const btnCart = document.getElementById('cart')
 const iconClass = 'fa-solid fa-cart-plus'
 qty.hidden = true
 btnEmpty.disabled = true
+btnPay.disabled = true
 
 if ('cards' in localStorage) {
 
@@ -264,6 +267,7 @@ function addToCart(shoppingCart) {
 
         totalPrice = totalPrice + subTotal
         qtyTotal = qtyTotal + card.qty
+        totalCompra = totalPrice
     })
 
     const totalAmount = document.createElement('p')
@@ -274,9 +278,10 @@ function addToCart(shoppingCart) {
 
     qtyTotal > 0 ? qty.hidden = false : qty.hidden = true
     qtyTotal <= 0 ? btnEmpty.disabled = true : btnEmpty.disabled = false
+    qtyTotal <= 0 ? btnPay.disabled = true : btnPay.disabled = false
 }
 
-btnEmpty.addEventListener('click', () => {     
+btnEmpty.addEventListener('click', () => {
 
     Swal.fire({
         title: '¿Estás seguro de vaciar el carrito?',
@@ -297,7 +302,33 @@ btnEmpty.addEventListener('click', () => {
             localStorage.removeItem('shoppingCart')
             shoppingCart = []
 
-            addToCart(shoppingCart) 
+            addToCart(shoppingCart)
+        }
+    })
+})
+
+btnPay.addEventListener('click', () => {
+
+    Swal.fire({
+        title: '¿Desea pagar por su compra?',
+        text: 'El total es de: $'+totalCompra.toFixed(2),
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Pagar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                '¡Su compra fue satisfactoria!',
+                '¡Gracias por preferirnos!',
+                'success'
+            )
+            localStorage.removeItem('shoppingCart')
+            shoppingCart = []
+
+            addToCart(shoppingCart)
         }
     })
 })
